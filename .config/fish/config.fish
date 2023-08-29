@@ -7,11 +7,6 @@ set -xg SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/ssh-agent.socket"
 fish_add_path $HOME/.dotnet/tools
 set -xg DOTNET_ROOT /usr/share/dotnet
 
-function mkdircd --argument dir
-    mkdir -p -- $dir
-    and cd -- $dir
-end
-
 if status is-interactive
 	# --- Key Bindings:
 	# NOTE: https://github.com/fish-shell/fish-shell/issues/4770
