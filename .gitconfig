@@ -13,3 +13,5 @@
 	helper = !gh auth git-credential
 [alias]
     co = checkout
+[push]
+	default = current
