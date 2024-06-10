@@ -32,6 +32,7 @@ if status is-interactive
     # NOTE: See https://ifconfig.co
     abbr -a getip "curl -s ifconfig.co/json | jq"
     abbr -a gittemp "git add . && git commit -m "Temp" --no-verify"
+	abbr -a gitamend "git add . && git commit --amend --no-edit"
 
     # --- Syntax Colorings:
     # NOTE: See https://fishshell.com/docs/current/interactive.html#syntax-highlighting-variables
