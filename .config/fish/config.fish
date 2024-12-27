@@ -33,6 +33,8 @@ if status is-interactive
     abbr -a getip "curl -s ifconfig.co/json | jq"
     abbr -a gittemp "git add . && git commit -m "Temp" --no-verify"
 	abbr -a gitamend "git add . && git commit --amend --no-edit"
+	# NOTE: From https://www.tecmint.com/find-linux-filesystem-type/
+	abbr -a filesystem "df -Th | grep "^/dev""
 
     # --- Syntax Colorings:
     # NOTE: See https://fishshell.com/docs/current/interactive.html#syntax-highlighting-variables
