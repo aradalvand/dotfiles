@@ -8,6 +8,13 @@ function proxy --description "Manage proxy settings and whitelist IPs"
     function _reset
         if test -e "/tmp/gost-proxy.pid"
             sudo kill -s TERM $(cat /tmp/gost-proxy.pid)
+            rm /tmp/gost-proxy.pid
+            echo "Stopped Gost process."
+        end
+        if test -e "/tmp/trojan-proxy.pid"
+            sudo kill -s TERM $(cat /tmp/trojan-proxy.pid)
+            rm /tmp/trojan-proxy.pid
+            echo "Stopped Trojan process."
         end
     end
 
@@ -17,11 +24,15 @@ function proxy --description "Manage proxy settings and whitelist IPs"
         case set
             _reset
 
-            # NOTE: We use gost to effectively transform a SOCKS proxy as an HTTP proxy, even though we coulud've done `http_proxy="socks5://37.32.12.91:443"`, because SOCKS itself is not supported by all programs that read `$http_proxy`. See https://askubuntu.com/a/1451781/1573432
-            gost -L=http://:8080 -F=socks5://37.32.12.91:443 > /dev/null 2>&1 &
+            trojan $HOME/.trojan/client.json > /dev/null 2>&1 &
             # NOTE: So that the process outlasts the shell instance (this script)
             disown
+            echo $last_pid > /tmp/trojan-proxy.pid
+            echo "Trojan process started."
 
+            # NOTE: We use gost to effectively transform a SOCKS proxy as an HTTP proxy, even though we coulud've done `http_proxy="socks5://127.0.0.1:1080"`, because SOCKS itself is not supported by all programs that read `$http_proxy`. See https://askubuntu.com/a/1451781/1573432
+            gost -L=http://:8080 -F=socks5://127.0.0.1:1080 > /dev/null 2>&1 &
+            disown
             echo $last_pid > /tmp/gost-proxy.pid
             echo "Gost process started."
 
@@ -32,10 +43,6 @@ function proxy --description "Manage proxy settings and whitelist IPs"
 
         case unset
             _reset
-
-            echo "Stopped Gost process."
-
-            rm /tmp/gost-proxy.pid
 
             set -e http_proxy
             set -e https_proxy
