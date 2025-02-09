@@ -17,3 +17,6 @@
 	autoSetupRemote = true
 [credential]
 	helper = store
+# https://stackoverflow.com/a/48088291/7734384
+[includeIf "gitdir:~/keyfive/"]
+    path = ~/keyfive/.gitconfig_include
